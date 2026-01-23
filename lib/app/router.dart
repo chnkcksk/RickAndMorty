@@ -16,10 +16,22 @@ import '../views/screens/favourites_view/favourites_view.dart';
 import '../views/screens/locations_view/locations_view.dart';
 import '../views/screens/locations_view/locations_viewmodel.dart';
 import '../views/screens/sections_view/sections_view.dart';
+import '../views/screens/login_view/login_view.dart';
+import '../views/screens/login_view/login_viewmodel.dart';
+import '../views/screens/register_view/register_view.dart';
+import '../views/screens/register_view/register_viewmodel.dart';
+import '../views/screens/otp_view/otp_view.dart';
+import '../views/screens/otp_view/otp_viewmodel.dart';
 
 final _routerKey = GlobalKey<NavigatorState>();
 
 class AppRoutes {
+  // Auth routes
+  static const String login = '/login';
+  static const String register = '/register';
+  static const String otp = '/otp';
+
+  // Main app routes
   static const String characters = '/';
   static const String favourites = '/favourites';
   static const String locations = '/locations';
@@ -34,8 +46,31 @@ class AppRoutes {
 
 final router = GoRouter(
   navigatorKey: _routerKey,
-  initialLocation: AppRoutes.characters,
+  initialLocation: AppRoutes.login,
   routes: [
+    // Auth routes (without bottom nav bar)
+    GoRoute(
+      path: AppRoutes.login,
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => LoginViewmodel(),
+        child: const LoginView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.register,
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => RegisterViewmodel(),
+        child: const RegisterView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.otp,
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => OtpViewmodel(),
+        child: const OtpView(),
+      ),
+    ),
+    // Main app routes (with bottom nav bar)
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) =>
           AppView(navigationShell: navigationShell),
